@@ -5,6 +5,7 @@ import java.util.List;
 import br.com.wandersontimoteo.dslistbackend.dto.GameDTO;
 import br.com.wandersontimoteo.dslistbackend.dto.GameMinDTO;
 import br.com.wandersontimoteo.dslistbackend.entities.Game;
+import br.com.wandersontimoteo.dslistbackend.projections.GameMinProjection;
 import br.com.wandersontimoteo.dslistbackend.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,9 @@ public class GameService {
         return result.stream().map(GameMinDTO::new).toList();
     }
 
-//    @Transactional(readOnly = true)
-//    public List<GameMinDTO> findByGameList(Long listId) {
-//        List<GameMinProjection> games = gameRepository.searchByList(listId);
-//        return games.stream().map(GameMinDTO::new).toList();
-//    }
+    @Transactional(readOnly = true)
+    public List<GameMinDTO> findByGameList(Long listId) {
+        List<GameMinProjection> games = gameRepository.searchByList(listId);
+        return games.stream().map(GameMinDTO::new).toList();
+    }
 }

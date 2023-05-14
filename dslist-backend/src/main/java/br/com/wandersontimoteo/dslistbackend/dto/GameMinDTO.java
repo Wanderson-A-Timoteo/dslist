@@ -1,6 +1,5 @@
 package br.com.wandersontimoteo.dslistbackend.dto;
 
-
 import br.com.wandersontimoteo.dslistbackend.entities.Game;
 
 public class GameMinDTO {

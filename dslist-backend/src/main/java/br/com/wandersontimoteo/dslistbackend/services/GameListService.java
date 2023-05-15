@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.wandersontimoteo.dslistbackend.dto.GameListDTO;
 import br.com.wandersontimoteo.dslistbackend.entities.GameList;
+import br.com.wandersontimoteo.dslistbackend.projections.GameMinProjection;
 import br.com.wandersontimoteo.dslistbackend.repositories.GameListRepository;
 import br.com.wandersontimoteo.dslistbackend.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,20 @@ public class GameListService {
         List<GameList> result = gameListRepository.findAll();
         return result.stream().map(GameListDTO::new).toList();
     }
-}
 
+    @Transactional
+    public void move(Long listId, int sourceIndex, int destinationIndex) {
+
+        List<GameMinProjection> list = gameRepository.searchByList(listId);
+
+        GameMinProjection obj = list.remove(sourceIndex);
+        list.add(destinationIndex, obj);
+
+        int min = sourceIndex < destinationIndex ? sourceIndex : destinationIndex;
+        int max = sourceIndex < destinationIndex ? destinationIndex : sourceIndex;
+
+        for (int i = min; i <= max; i++) {
+            gameListRepository.updateBelongingPosition(listId, list.get(i).getId(), i);
+        }
+    }
+}
